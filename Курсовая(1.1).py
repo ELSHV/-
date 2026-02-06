@@ -1,141 +1,110 @@
-from tkinter import*
-root = Tk()
-root.title('Меню Курсовой Работы')
-root.geometry('400x300')
-root.configure(bg = "lightblue")
-var = IntVar()
-var.set(0)
+from tkinter import *
+import customtkinter as CTk
+from PIL import Image, ImageTk
 
-#-----------------------------------------------------------------------------------------------------------#
-def integral():
-    win = Toplevel(root)
-    win.geometry('500x400')
-    win.resizable(height = False,width = False)
-    win.title('Интегралы')
-    win.configure(bg = 'lightblue')
-    
-    lbl_A= Label(win,text ='a',bg = 'lightblue')
-    lbl_A.place(x = 270,y = 145)
-    
-    Entry_A = Entry(win,width = 15)
-    Entry_A.place(x = 285,y = 145)
-    
-    lbl_B = Label(win,text ='b',bg = 'lightblue')
-    lbl_B.place(x = 270,y = 180)
-    
-    Entry_B = Entry(win,width = 15)
-    Entry_B.place(x = 285,y = 180)
-    
-    lbl_N = Label(win,text ='n',bg = 'lightblue')
-    lbl_N.place(x = 270,y = 220)
-    
-    Entry_N = Entry(win,width = 15)
-    Entry_N.place(x = 285,y = 220)
-    
-    lbl_Lprmk = Label(win,text ='Левые прямоугольники',bg = 'lightblue')
-    lbl_Lprmk.place(x = 5,y = 145)
-    
-    Entry_Lprmk = Entry(win,width = 15)
-    Entry_Lprmk.place(x = 150,y = 145)
-    
-    lbl_Pprmk = Label(win,text ='Правые прямоугольники',bg = 'lightblue')
-    lbl_Pprmk.place(x = 5,y = 185)
-    
-    Entry_Pprmk = Entry(win,width = 15)
-    Entry_Pprmk.place(x = 150,y = 185)
-    
-    lbl_Trapezia = Label(win,text ='Трапеция',bg = 'lightblue')
-    lbl_Trapezia.place(x = 5,y = 225)
-    
-    Entry_Trapezia = Entry(win,width = 15)
-    Entry_Trapezia.place(x = 150,y = 225)
-    
-    lbl_Simpson= Label(win,text ='Симпсон',bg = 'lightblue')
-    lbl_Simpson.place(x = 5,y = 230)
-    
-    Entry_Simpson = Entry(win,width = 15)
-    Entry_Simpson.place(x = 150,y = 225)
-    
-    lbl_n_min = Label(win,text ='n_min',bg = 'lightblue')
-    lbl_n_min.place(x = 5,y = 280)
-    
-    Entry_n_min = Entry(win,width = 15)
-    Entry_n_min.place(x = 150,y = 280)
+Button_Width, Button_Height = 200, 50
+Button_Font = ("Arial", 15, "bold")
+FG_Colour = "#080871"
 
-    btn_save = Button(win,text = 'Считать',width = 30,height = 2)
-    btn_save.place(x = 270,y = 260)
-    
-    btn_save = Button(win,text = 'Рунге',width = 30,height = 2)
-    btn_save.place(x = 270,y = 305)
-    
-    btn_save = Button(win,text = 'Найти n_min',width = 33,height = 2)
-    btn_save.place(x = 5,y = 305)
-    
-    btn_save = Button(win,text = 'Выйти',width = 30,height = 2)
-    btn_save.place(x = 270,y = 350)
+Button_Width2, Button_Height2 = 200, 30
+Button_Font2 = ("Arial", 15, "bold")
+FG_Colour2 = "#080871"
 
-btn_Integral = Button(root,text = 'Интегралы',width = 30,height = 2,command = integral)
-btn_Integral.place(x = 100,y = 5)
-#-----------------------------------------------------------------------------------------------------------#
 
-def nellin():
-    win = Toplevel(root)
-    win.geometry('400x400')
-    win.resizable(height = False,width = False)
-    win.title('Нелинейные уравнения')
-    win.configure(bg = 'lightblue')
+class SecondWindow(CTk.CTkToplevel):
+    def __init__(self, parent):
+        super().__init__()
+        self.parent = parent
+        self.title("Интеграл")
+        self.geometry("650x400")
+        self.resizable(False, False)
 
-btn_nellin = Button(root,text = 'НУ',width = 30,height = 2,command = nellin)
-btn_nellin.place(x = 100,y = 55,)
+        self.count_button = CTk.CTkButton(master=self, text="СЧИТАТЬ", width=Button_Width2,
+                                          height=Button_Height2, font=Button_Font2, fg_color=FG_Colour2, corner_radius=15)
+        self.count_button.place(x=430, y=295)
 
-#-----------------------------------------------------------------------------------------------------------#
+        self.count_button = CTk.CTkButton(master=self, text="МЕТОД РУНГЕ", width=Button_Width2,
+                                          height=Button_Height2, font=Button_Font2, fg_color=FG_Colour2, corner_radius=15)
+        self.count_button.place(x=430, y=330)
 
-def polinom():
-    win = Toplevel(root)
-    win.geometry('400x400')
-    win.resizable(height = False,width = False)
-    win.title('Полиномы')
-    win.configure(bg = 'lightblue')
+        self.count_button = CTk.CTkButton(master=self, text="N_MIN", width=Button_Width2,
+                                          height=Button_Height2, font=Button_Font2, fg_color=FG_Colour2,
+                                          corner_radius=15)
+        self.count_button.place(x=430, y=365)
 
-btn_polinom = Button(root,text = 'Полиномы',width = 30,height = 2,command = polinom)
-btn_polinom.place(x = 100,y = 105)
+        # Кнопка назад(в меню вкладки Интегралы)
+        self.back_button = CTk.CTkButton(master=self, text="НАЗАД", width=10,
+                                         height=Button_Height2, font=Button_Font2, fg_color=FG_Colour2, corner_radius=15,
+                                         command=self.close)
+        self.back_button.place(x=10, y=365)
 
-#-----------------------------------------------------------------------------------------------------------#
+        self.protocol("WM_DELETE_WINDOW", self.close)
 
-def MNK():
-    win = Toplevel(root)
-    win.geometry('400x400')
-    win.resizable(height = False,width = False)
-    win.title('МНК')
-    win.configure(bg = 'lightblue')
+    def close(self):
+        self.parent.deiconify()
+        self.destroy()
 
-btn_MNK = Button(root,text = 'МНК',width = 30,height = 2,command = MNK)
-btn_MNK.place(x = 100,y = 160)
 
-#-----------------------------------------------------------------------------------------------------------#
+class App(CTk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.geometry("460x400")
+        self.title("Курсовая работа")
+        self.resizable(False, False)
+        self.configure(fg_color="#2C2C2F")
 
-def MKR():
-    win = Toplevel(root)
-    win.geometry('400x400')
-    win.resizable(height = False,width = False)
-    win.title('МКР')
-    win.configure(bg = 'lightblue')
+        # Интерфейс главного меню и меню вкладки Интегралы
+        # _____________________________________________________________________________________________________________#
+        self.Menu = CTk.CTkButton(master=self, text="ГЛАВНОЕ МЕНЮ", font=("Arial", 25, "bold"), fg_color=FG_Colour)
+        self.Menu.place(x=125, y=-4)
 
-btn_MKR= Button(root,text = 'МКР',width = 30,height = 2,command = MKR)
-btn_MKR.place(x = 100,y = 215)
+        self.integral = CTk.CTkButton(master=self, text="ИНТЕГРАЛЫ", width=Button_Width,
+                                      height=Button_Height, font=Button_Font, fg_color=FG_Colour,
+                                      corner_radius=15, command=self.second_window)
+        self.integral.place(x=10, y=70)
 
-#-----------------------------------------------------------------------------------------------------------#
+        # Интерфейс вкладки Полиномы
+        # _____________________________________________________________________________________________________________#
+        self.Polinom = CTk.CTkButton(master=self, text="ПОЛИНОМЫ", width=Button_Width,
+                                     height=Button_Height, font=Button_Font, fg_color=FG_Colour, corner_radius=15)
+        self.Polinom.place(x=10, y=130)
 
-def author():
-    win = Toplevel(root)
-    win.geometry('400x400')
-    win.resizable(height = False,width = False)
-    win.title('От Автора')
-    win.configure(bg = 'lightblue')
+        # Интерфейс вкладки Н/У (Нелинейные уравнения )
+        # _____________________________________________________________________________________________________________#
+        self.N_Y = CTk.CTkButton(master=self, text="Н/У", width=Button_Width,
+                                 height=Button_Height, font=Button_Font, fg_color=FG_Colour, corner_radius=15)
+        self.N_Y.place(x=10, y=190)
 
-btn_author = Button(root,text = 'От Автора',command = author)
-btn_author.place(x = 5,y = 270)
+        # Интерфейс вкладки МНК ()
+        # _____________________________________________________________________________________________________________#
+        self.MNK = CTk.CTkButton(master=self, text="МНК", width=Button_Width,
+                                 height=Button_Height, font=Button_Font, fg_color=FG_Colour, corner_radius=15)
+        self.MNK.place(x=250, y=70)
 
-#-----------------------------------------------------------------------------------------------------------#    
-    
-root.mainloop()
+        # Интерфейс вкладки МКР ()
+        # _____________________________________________________________________________________________________________#
+        self.MKR = CTk.CTkButton(master=self, text="МКР", width=Button_Width,
+                                 height=Button_Height, font=Button_Font, fg_color=FG_Colour, corner_radius=15)
+        self.MKR.place(x=250, y=130)
+
+        # Интерфейс вкладки От Автора
+        # _____________________________________________________________________________________________________________#
+        self.Author = CTk.CTkButton(master=self, text="ОТ АВТОРА", width=Button_Width,
+                                    height=Button_Height, font=Button_Font, fg_color=FG_Colour, corner_radius=15)
+        self.Author.place(x=250, y=190)
+
+        # Кнопка Выйти (ЗАкрыть полность Окно с ГИ)
+        # _____________________________________________________________________________________________________________#
+        self.Exit = CTk.CTkButton(master=self, text="ВЫЙТИ", width=20,
+                                  height=40, font=Button_Font, fg_color=FG_Colour,
+                                  corner_radius=15, command=self.destroy)
+        self.Exit.place(x=10, y=350)
+
+    def second_window(self):
+        self.withdraw()
+        second_window = SecondWindow(self)
+
+
+if __name__ == '__main__':
+    app = App()
+    app.mainloop()
